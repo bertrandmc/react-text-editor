@@ -9,7 +9,7 @@ export function TextEditor(): JSX.Element {
   const [editorState, setEditorState] = useContext(TextEditorContext);
   const [editorRef, focusEditor] = useFocusEditor();
 
-  useEffect(() => focusEditor());
+  useEffect(() => focusEditor(), []);
 
   return (
     <div className="TextEditor" onClick={focusEditor}>

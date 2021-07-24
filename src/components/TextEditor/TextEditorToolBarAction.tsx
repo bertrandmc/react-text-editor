@@ -22,8 +22,12 @@ export function TextEditorToolBarAction({
   }
 
   return (
-    <div className="TextEditorToolBarAction" onClick={toggler}>
+    <button
+      className="TextEditorToolBarAction"
+      onClick={toggler}
+      aria-label={inlineStyle ?? blockType}
+    >
       {children}
-    </div>
+    </button>
   );
 }

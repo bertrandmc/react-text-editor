@@ -24,9 +24,9 @@ export function TextEditorToolBarActionLink(): JSX.Element {
 
   return (
     <div className="TextEditorToolBarActionLink">
-      <div className="TextEditorToolBarAction" onClick={toggleShowLinkInput}>
+      <button className="TextEditorToolBarAction" onClick={toggleShowLinkInput}>
         <FontAwesomeIcon icon={faLink} />
-      </div>
+      </button>
       {showLinkInput && (
         <div className="TextEditorToolBarActionLink_input-wrapper">
           <input
