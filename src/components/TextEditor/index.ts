@@ -1,1 +1,1 @@
-export { TextEditor } from "./TextEditor";
+export { TextEditorContainer as TextEditor } from "./TextEditorContainer";

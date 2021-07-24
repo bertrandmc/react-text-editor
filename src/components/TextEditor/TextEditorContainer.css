@@ -1,18 +1,14 @@
-.TextEditor {
+.TextEditorContainer {
   display: flex;
-  flex: 1;
   flex-direction: column;
   min-height: 100%;
+  width: 98vw;
   background-color: #ffffff;
 }
 
-.DraftEditor-root {
-  width: 98vw;
-  padding: 0 1vw;
-}
-
 @media screen and (min-width: 1024px) {
-  .DraftEditor-root {
+  .TextEditorContainer {
     width: 70vw;
+    max-width: 70em;
   }
 }

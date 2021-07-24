@@ -1,0 +1,5 @@
+.TextEditorToolBar {
+  display: flex;
+  padding: 1em;
+  border-bottom: 1px solid #ebebeb;
+}
