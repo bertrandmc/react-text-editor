@@ -1,0 +1,14 @@
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  background-color: #fcfcfc;
+}
+
+.App {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+}

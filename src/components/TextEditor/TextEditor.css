@@ -1,0 +1,7 @@
+.TextEditor {
+  display: flex;
+  flex: 1;
+  min-height: 100%;
+  max-width: 70em;
+  background-color: #ffffff;
+}
