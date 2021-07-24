@@ -8,5 +8,5 @@ beforeEach(() => {
 });
 
 test("renders without crashing", () => {
-  render(<App />);
+  expect(() => render(<App />)).not.toThrow();
 });

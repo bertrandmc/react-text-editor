@@ -1,7 +1,6 @@
 import React from "react";
 import { DraftBlockType, DraftInlineStyleType } from "draft-js";
 import { useToggleBlockType, useToggleInlineStyle } from "./hooks";
-import "./TextEditorToolBarAction.css";
 
 interface Props {
   children: React.ReactNode;

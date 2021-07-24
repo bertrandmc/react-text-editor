@@ -1,17 +1,89 @@
+.TextEditorContainer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
 .TextEditor {
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-height: 100%;
+  background-color: #ffffff;
+  z-index: 0;
+  margin-left: 5em;
+}
+
+.DraftEditor-editorContainer {
+  padding: 1em;
+}
+
+.TextEditorToolBar {
+  position: fixed;
+  top: 25%;
+  margin-left: 0.8em;
+  display: flex;
+  width: auto;
+  flex-direction: column;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 1px solid #ebebeb;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.TextEditorToolBarAction {
+  padding: 1em;
+  text-align: center;
+}
+
+.TextEditorToolBarActionLink {
+  position: relative;
+}
+
+.TextEditorToolBarActionLink_input {
+  outline: none !important;
+  border: 1px solid #000000;
+  box-shadow: 0px 0px 6px 1px rgb(0 0 0 / 16%);
+  border-radius: 4px;
+  padding: 0.5em;
+}
+
+.TextEditorToolBarActionLink_input-wrapper {
+  position: absolute;
+  top: 25%;
+  left: 100%;
   background-color: #ffffff;
 }
 
-.DraftEditor-root {
-  width: 98vw;
-  padding: 0 1vw;
+.TextEditorToolBarActionLink_input-wrapper:before {
+  position: absolute;
+  top: 25%;
+  left: -1em;
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-right: 8px solid black;
+  border-bottom: 8px solid transparent;
+  border-left: 8px solid transparent;
+}
+
+.TextEditorDecoratorLink {
+  cursor: pointer;
+  color: var(--color-link);
+}
+
+.TextEditorDecoratorLink:hover {
+  color: hotpink;
 }
 
 @media screen and (min-width: 1024px) {
+  .TextEditorContainer {
+    width: 70vw;
+    max-width: 70em;
+  }
+
   .DraftEditor-root {
     width: 70vw;
   }

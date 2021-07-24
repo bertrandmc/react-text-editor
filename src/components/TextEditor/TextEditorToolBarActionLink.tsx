@@ -2,7 +2,6 @@ import React, { useCallback, useState, KeyboardEvent } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
 import { useToggleLink } from "./hooks";
-import "./TextEditorToolBarActionLink.css";
 
 export function TextEditorToolBarActionLink(): JSX.Element {
   const [showLinkInput, setShowLinkInput] = useState(false);
@@ -35,6 +34,7 @@ export function TextEditorToolBarActionLink(): JSX.Element {
             type="text"
             placeholder="https://..."
             onKeyDown={handleInputKeydown}
+            className="TextEditorToolBarActionLink_input"
           />
         </div>
       )}

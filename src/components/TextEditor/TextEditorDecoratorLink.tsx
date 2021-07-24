@@ -1,6 +1,5 @@
 import React, { ReactNode, useCallback } from "react";
 import { ContentState, DraftDecorator } from "draft-js";
-import "./TextEditorDecoratorLink.css";
 
 interface Props {
   contentState: ContentState;

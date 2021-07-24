@@ -12,10 +12,12 @@ export function TextEditor(): JSX.Element {
   useEffect(() => focusEditor());
 
   return (
-    <Editor
-      ref={editorRef}
-      editorState={editorState}
-      onChange={setEditorState}
-    />
+    <div className="TextEditor" onClick={focusEditor}>
+      <Editor
+        ref={editorRef}
+        editorState={editorState}
+        onChange={setEditorState}
+      />
+    </div>
   );
 }

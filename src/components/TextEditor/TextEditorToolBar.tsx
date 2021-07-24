@@ -3,7 +3,6 @@ import * as fa from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TextEditorToolBarAction as Action } from "./TextEditorToolBarAction";
 import { TextEditorToolBarActionLink as ActionLink } from "./TextEditorToolBarActionLink";
-import "./TextEditorToolBar.css";
 
 export function TextEditorToolBar(): JSX.Element {
   return (
