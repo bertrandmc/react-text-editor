@@ -1,21 +1,29 @@
 import React from "react";
-import { DraftInlineStyleType } from "draft-js";
-import { useToggleInlineStyle } from "./hooks";
+import { DraftBlockType, DraftInlineStyleType } from "draft-js";
+import { useToggleBlockType, useToggleInlineStyle } from "./hooks";
 import "./TextEditorToolBarAction.css";
 
 interface Props {
   children: React.ReactNode;
-  inlineStyle: DraftInlineStyleType;
+  inlineStyle?: DraftInlineStyleType;
+  blockType?: DraftBlockType;
 }
 
 export function TextEditorToolBarAction({
   children,
   inlineStyle,
+  blockType,
 }: Props): JSX.Element {
-  const toggleStyle = useToggleInlineStyle(inlineStyle);
+  let toggler;
+
+  if (inlineStyle !== undefined) {
+    toggler = useToggleInlineStyle(inlineStyle);
+  } else if (blockType !== undefined) {
+    toggler = useToggleBlockType(blockType);
+  }
 
   return (
-    <div className="TextEditorToolBarAction" onClick={toggleStyle}>
+    <div className="TextEditorToolBarAction" onClick={toggler}>
       {children}
     </div>
   );

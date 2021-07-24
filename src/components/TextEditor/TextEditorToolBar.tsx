@@ -1,12 +1,6 @@
 import React from "react";
+import * as fa from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBold,
-  faItalic,
-  faStrikethrough,
-  faUnderline,
-  faCode,
-} from "@fortawesome/free-solid-svg-icons";
 import { TextEditorToolBarAction as Action } from "./TextEditorToolBarAction";
 import "./TextEditorToolBar.css";
 
@@ -14,19 +8,25 @@ export function TextEditorToolBar(): JSX.Element {
   return (
     <div className="TextEditorToolBar">
       <Action inlineStyle="BOLD">
-        <FontAwesomeIcon icon={faBold} />
+        <FontAwesomeIcon icon={fa.faBold} />
       </Action>
       <Action inlineStyle="ITALIC">
-        <FontAwesomeIcon icon={faItalic} />
+        <FontAwesomeIcon icon={fa.faItalic} />
       </Action>
       <Action inlineStyle="STRIKETHROUGH">
-        <FontAwesomeIcon icon={faStrikethrough} />
+        <FontAwesomeIcon icon={fa.faStrikethrough} />
       </Action>
       <Action inlineStyle="UNDERLINE">
-        <FontAwesomeIcon icon={faUnderline} />
+        <FontAwesomeIcon icon={fa.faUnderline} />
       </Action>
       <Action inlineStyle="CODE">
-        <FontAwesomeIcon icon={faCode} />
+        <FontAwesomeIcon icon={fa.faCode} />
+      </Action>
+      <Action blockType="unordered-list-item">
+        <FontAwesomeIcon icon={fa.faListUl} />
+      </Action>
+      <Action blockType="ordered-list-item">
+        <FontAwesomeIcon icon={fa.faListOl} />
       </Action>
     </div>
   );

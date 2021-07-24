@@ -1,5 +1,7 @@
 .TextEditorToolBar {
   display: flex;
   padding: 1em;
+  justify-content: center;
   border-bottom: 1px solid #ebebeb;
+  margin-bottom: 1em;
 }
