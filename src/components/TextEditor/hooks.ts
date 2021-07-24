@@ -1,11 +1,22 @@
 import {
-  RichUtils,
-  DraftInlineStyleType,
   Editor,
+  RichUtils,
+  EditorState,
   DraftBlockType,
+  DraftInlineStyleType,
 } from "draft-js";
 import { useCallback, useContext, MouseEvent, useRef, RefObject } from "react";
 import { TextEditorContext } from "./TextEditorContext";
+
+export function useFocusEditor(): [RefObject<Editor>, () => void] {
+  const editorRef = useRef<Editor>(null);
+  const focusEditor = useCallback(
+    () => editorRef.current?.focus(),
+    [editorRef]
+  );
+
+  return [editorRef, focusEditor];
+}
 
 export function useToggleInlineStyle(
   inlineStyle: DraftInlineStyleType
@@ -37,12 +48,31 @@ export function useToggleBlockType(
   );
 }
 
-export function useFocusEditor(): [RefObject<Editor>, () => void] {
-  const editorRef = useRef<Editor>(null);
-  const focusEditor = useCallback(
-    () => editorRef.current?.focus(),
-    [editorRef]
-  );
+export function useToggleLink(): (url: string) => void {
+  const [editorState, setEditorState] = useContext(TextEditorContext);
 
-  return [editorRef, focusEditor];
+  return useCallback(
+    (url: string) => {
+      const contentState = editorState.getCurrentContent();
+      const contentStateWithEntity = contentState.createEntity(
+        "LINK",
+        "MUTABLE",
+        { url }
+      );
+
+      const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
+      const newEditorState = EditorState.set(editorState, {
+        currentContent: contentStateWithEntity,
+      });
+
+      const newState = RichUtils.toggleLink(
+        newEditorState,
+        newEditorState.getSelection(),
+        entityKey
+      );
+
+      setEditorState(newState);
+    },
+    [editorState]
+  );
 }

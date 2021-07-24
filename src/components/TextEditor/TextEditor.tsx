@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from "react";
 import { Editor } from "draft-js";
 import { useFocusEditor } from "./hooks";
 import { TextEditorContext } from "./TextEditorContext";
-
 import "draft-js/dist/Draft.css";
 import "./TextEditor.css";
 
