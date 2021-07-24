@@ -1,3 +1,6 @@
+.TextEditorToolBarAction {
+  padding: 1em;
+}
 .TextEditorToolBarAction:not(:first-child) {
   margin-left: 1em;
 }
