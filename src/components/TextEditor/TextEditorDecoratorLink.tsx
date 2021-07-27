@@ -7,20 +7,25 @@ interface Props {
   entityKey: string;
 }
 
+export function enforceHttps(string: string): string {
+  return `https://${string.replace(/^https?:?\/?\/?/i, "")}`;
+}
+
 export function TextEditorDecoratorLink(props: Props): JSX.Element {
   const { url } = props.contentState.getEntity(props.entityKey).getData();
+  const secureUrl = enforceHttps(url);
   const openLink = useCallback(
     (event) => {
       event.preventDefault();
-      window.open(url, "_blank");
+      window.open(secureUrl, "_blank");
     },
     [url]
   );
 
   return (
     <a
-      href={url}
-      title={url}
+      href={secureUrl}
+      title={secureUrl}
       onClick={openLink}
       target="_blank"
       rel="noreferrer"
