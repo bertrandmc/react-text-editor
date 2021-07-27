@@ -16,19 +16,15 @@ import {
   MouseEvent,
   useCallback,
 } from "react";
+import { documentsCollection } from "../../services/firestore";
 import { useDocument } from "react-firebase-hooks/firestore";
-import { FIREBASE_CONFIG } from "./config";
-import firebase from "firebase/app";
-import "firebase/firestore";
 import { TextEditorContext } from "./TextEditorContext";
 import { TextEditorContextProps } from "./types";
-import { decorator } from "./decorator";
+import { createNewEditorState } from "./helpers";
 
 import * as jsondiffpatch from "jsondiffpatch";
 
 const j = jsondiffpatch.create({});
-
-firebase.initializeApp(FIREBASE_CONFIG);
 
 export function useFocusEditor(): [RefObject<Editor>, () => void] {
   const editorRef = useRef<Editor>(null);
@@ -101,12 +97,9 @@ export function useToggleLink(): (url: string) => void {
 export function usePersistentEditorState(
   documentId: string
 ): TextEditorContextProps {
-  const collection = firebase.firestore().collection("documents");
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty(decorator)
-  );
+  const [editorState, setEditorState] = useState(createNewEditorState);
   const [document, loading, error] = useDocument(
-    collection.doc(`${documentId}`)
+    documentsCollection.doc(`${documentId}`)
   );
 
   const setState = useCallback(
@@ -124,7 +117,7 @@ export function usePersistentEditorState(
         );
         const rawNewState = convertToRaw(newState.getCurrentContent());
 
-        collection
+        documentsCollection
           .doc(documentId)
           .set({ editorState: rawNewState }, { merge: true });
       }
@@ -133,16 +126,6 @@ export function usePersistentEditorState(
     },
     [document]
   );
-
-  useEffect(() => {
-    // create new empty state if it doesn't exist
-    if (!loading && !document?.exists) {
-      const rawState = convertToRaw(editorState.getCurrentContent());
-      collection
-        .doc(documentId)
-        .set({ editorState: rawState }, { merge: true });
-    }
-  }, []);
 
   useEffect(() => {
     // apply remote changes
