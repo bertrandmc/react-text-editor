@@ -13,6 +13,10 @@
   margin-left: 5em;
 }
 
+.TextEditor_loading {
+  padding: 1em;
+}
+
 .DraftEditor-editorContainer {
   padding: 1em;
 }
@@ -63,7 +67,7 @@
   position: absolute;
   top: 25%;
   left: -1em;
-  content: '';
+  content: "";
   display: block;
   width: 0;
   height: 0;

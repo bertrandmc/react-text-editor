@@ -2,11 +2,33 @@ import {
   Editor,
   RichUtils,
   EditorState,
+  convertToRaw,
+  convertFromRaw,
   DraftBlockType,
   DraftInlineStyleType,
 } from "draft-js";
-import { useCallback, useContext, MouseEvent, useRef, RefObject } from "react";
+import {
+  useRef,
+  useState,
+  useEffect,
+  RefObject,
+  useContext,
+  MouseEvent,
+  useCallback,
+} from "react";
+import { useDocument } from "react-firebase-hooks/firestore";
+import { FIREBASE_CONFIG } from "./config";
+import firebase from "firebase/app";
+import "firebase/firestore";
 import { TextEditorContext } from "./TextEditorContext";
+import { TextEditorContextProps } from "./types";
+import { decorator } from "./decorator";
+
+import * as jsondiffpatch from "jsondiffpatch";
+
+const j = jsondiffpatch.create({});
+
+firebase.initializeApp(FIREBASE_CONFIG);
 
 export function useFocusEditor(): [RefObject<Editor>, () => void] {
   const editorRef = useRef<Editor>(null);
@@ -74,4 +96,77 @@ export function useToggleLink(): (url: string) => void {
     },
     [editorState]
   );
+}
+
+export function usePersistentEditorState(
+  documentId: string
+): TextEditorContextProps {
+  const collection = firebase.firestore().collection("documents");
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty(decorator)
+  );
+  const [document, loading, error] = useDocument(
+    collection.doc(`${documentId}`)
+  );
+
+  const setState = useCallback(
+    (editorState) => {
+      const rawLocalState = convertToRaw(editorState.getCurrentContent());
+      const rawServerState = document?.data()?.editorState;
+      const delta = j.diff(rawServerState, rawLocalState);
+
+      if (delta) {
+        const nextContentState = convertFromRaw(j.patch(rawLocalState, delta));
+        const newState = EditorState.push(
+          editorState,
+          nextContentState,
+          "apply-entity"
+        );
+        const rawNewState = convertToRaw(newState.getCurrentContent());
+
+        collection
+          .doc(documentId)
+          .set({ editorState: rawNewState }, { merge: true });
+      }
+
+      setEditorState(editorState);
+    },
+    [document]
+  );
+
+  useEffect(() => {
+    // create new empty state if it doesn't exist
+    if (!loading && !document?.exists) {
+      const rawState = convertToRaw(editorState.getCurrentContent());
+      collection
+        .doc(documentId)
+        .set({ editorState: rawState }, { merge: true });
+    }
+  }, []);
+
+  useEffect(() => {
+    // apply remote changes
+    const rawServerState = document?.data()?.editorState;
+
+    if (document?.exists && !loading && rawServerState !== undefined) {
+      const rawLocalState = convertToRaw(editorState.getCurrentContent());
+      const delta = j.diff(rawLocalState, rawServerState);
+
+      if (delta !== undefined) {
+        const selectionState = editorState.getSelection();
+        const nextContentState = convertFromRaw(j.patch(rawLocalState, delta));
+        const newState = EditorState.push(
+          editorState,
+          nextContentState,
+          "apply-entity"
+        );
+
+        setEditorState(EditorState.forceSelection(newState, selectionState));
+      }
+    }
+  }, [document]);
+
+  const isLoading = !document?.exists || loading;
+
+  return [editorState, setState, isLoading, error];
 }

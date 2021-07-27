@@ -1,10 +1,6 @@
-import React, { createContext, useState } from "react";
-import { EditorState } from "draft-js";
-import { decorator } from "./decorator";
-
-type SetEditorState = React.Dispatch<React.SetStateAction<EditorState>>;
-
-type TextEditorContextProps = [EditorState, SetEditorState];
+import React, { createContext } from "react";
+import { TextEditorContextProps } from "./types";
+import { usePersistentEditorState } from "./hooks";
 
 interface Props {
   children: React.ReactNode;
@@ -15,7 +11,7 @@ export const TextEditorContext = createContext<TextEditorContextProps>(
 );
 
 export function TextEditorContextProvider({ children }: Props): JSX.Element {
-  const state = useState(() => EditorState.createEmpty(decorator));
+  const state = usePersistentEditorState("123abc");
 
   return (
     <TextEditorContext.Provider value={state}>
